@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">Login</div>
+        <div class="card-body">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" class="form-control" name="username" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" name="password" autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+        <div class="card-footer text-muted">
+            <a href="/auth/register-page">Register?</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    console.log("inline script running!");
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        console.log("form submitted!");
+
+        const payload = new URLSearchParams();
+        payload.append('username', this.querySelector('[name="username"]').value);
+        payload.append('password', this.querySelector('[name="password"]').value);
+
+        const response = await fetch('/auth/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: payload.toString()
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            document.cookie = `access_token=${data.access_token}; path=/`;
+            window.location.href = '/todos/todo-page';
+        } else {
+            alert('Login failed');
+        }
+    });
+</script>
+{% endblock %}

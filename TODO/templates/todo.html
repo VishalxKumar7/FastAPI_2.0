@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="card text-center">
+        <div class="card-header">Your Todo's!</div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Info</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for todo in todos %}
+                    {% if todo.complete == False %}
+                    <tr class="pointer">
+                        <th>{{loop.index}}</th>
+                        <th>{{todo.title}}</th>
+                        <td>
+                            <button onclick="window.location.href='/todos/edit-todo-page/{{todo.id}}'" type="button" class="btn btn-info">Edit</button>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr class="pointer alert alert-success">
+                        <th>{{loop.index}}</th>
+                        <th class="strike-through-td">{{todo.title}}</th>
+                        <td>
+                            <button onclick="window.location.href='/todos/edit-todo-page/{{todo.id}}'" type="button" class="btn btn-info">Edit</button>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="add-todo-page" class="btn btn-primary">Add a new todo!</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
